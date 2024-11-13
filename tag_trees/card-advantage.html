@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scryfall Tagger – A crowdsourced tag catalog for Magic: The Gathering cards and illustrations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/legacy.css?2.0" rel="stylesheet" media="all" />
+    
+  </head>
+  <body class="admin ">
+    <svg aria-hidden="true" focusable="false" class="spritesheet">
+      <symbol id="icons-tag" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"> <path d="M58.9,0.6c-0.7-0.7-1.8-0.7-2.5,0L53.1,4H30.8L1.5,33.5c-0.7,0.7-1,1.6-1,2.5s0.4,1.8,1,2.5L22,59c0.7,0.7,1.6,1,2.5,1 c0.9,0,1.8-0.3,2.5-1l28.5-29.3V6.5l3.4-3.4C59.6,2.4,59.5,1.3,58.9,0.6z M45.3,17.3c0,1.7-1.3,3-3,3s-3-1.3-3-3s1.3-3,3-3 c0.2,0,0.4,0,0.6,0.1l-0.5,0.5c-0.7,0.7-0.7,1.8,0,2.5c0.3,0.3,0.8,0.5,1.2,0.5c0.5,0,0.9-0.2,1.2-0.5l0.4-0.4 C45.3,17.1,45.3,17.2,45.3,17.3z M44.8,11.3c-0.8-0.3-1.6-0.5-2.4-0.5c-3.6,0-6.5,2.9-6.5,6.5s2.9,6.5,6.5,6.5s6.5-2.9,6.5-6.5 c0-0.9-0.2-1.7-0.5-2.5L52,11v17.2L24.5,56.5L4,36L32.3,7.5h16.1C47.9,8,45.2,10.9,44.8,11.3z"/> </symbol>
+      <symbol id="icons-card" viewBox="0 0 12 15" xmlns="http://www.w3.org/2000/svg"><path d="M11 9H1v2.718c0 .446.046.607.134.77.087.163.215.29.378.378.163.088.324.134.77.134H4c0-.552.895-1 2-1s2 .448 2 1h1.718c.446 0 .607-.046.77-.134.163-.087.29-.215.378-.378.088-.163.134-.324.134-.77V9zm0-1V2.282c0-.446-.046-.607-.134-.77-.087-.163-.215-.29-.378-.378-.163-.088-.324-.134-.77-.134H2.282c-.446 0-.607.046-.77.134-.163.087-.29.215-.378.378-.088.163-.134.324-.134.77V8h10zM1 0h10c.552 0 1 .448 1 1v13c0 .552-.448 1-1 1H1c-.552 0-1-.448-1-1V1c0-.552.448-1 1-1zm5 13.5c.552 0 1-.224 1-.5s-.448-.5-1-.5-1 .224-1 .5.448.5 1 .5z" fill-rule="evenodd"/></symbol>
+      <symbol id="icons-print" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"> <path d="M256,160c-52.9,0-96,43.1-96,96s43.1,96,96,96s96-43.1,96-96S308.9,160,256,160z M256,312c-30.9,0-56-25.1-56-56 s25.1-56,56-56s56,25.1,56,56S286.9,312,256,312z M512,236h-40.9c-4.6-50.1-26.3-96.7-62.3-132.7c-36-36-82.6-57.8-132.7-62.3V0h-40 v40.9c-50.1,4.6-96.7,26.3-132.7,62.3c-36,36-57.8,82.6-62.3,132.7H0v40h40.9c4.6,50.1,26.3,96.7,62.3,132.7 c36,36,82.6,57.8,132.7,62.3V512h40v-40.9c50.1-4.6,96.7-26.3,132.7-62.3c36-36,57.8-82.6,62.3-132.7H512V236z M276,430.9V393h-40 v37.9C154.9,421.6,90.4,357.1,81.1,276H120v-40H81.1C90.4,154.9,154.9,90.4,236,81.1V120h40V81.1c81.1,9.2,145.6,73.8,154.9,154.9 H392v40h38.9C421.6,357.1,357.1,421.6,276,430.9z"/> </symbol>
+      <symbol id="icons-artwork" viewBox="0 0 33 28" xmlns="http://www.w3.org/2000/svg"><path d="M5.794 25.16l.847-.85-.347-1.15A4.001 4.001 0 0 1 10.121 18c2.206 0 4 1.79 4 4s-1.794 4-4 4H4.949l.845-.84zm9.626-13.08l1.18-.897 4.34 4.34-.895 1.177c-.5.66-1.712 1.21-2.648 1.21-.094 0-.183 0-.263-.01l-1.06-.16c-.75-.1-1.59-.94-1.697-1.69l-.152-1.06c-.13-.91.462-2.36 1.195-2.91zm11.924-9.07c.779-.59 1.712-.94 2.128-.97.206.11.498.4.614.61-.032.34-.31 1.25-.973 2.13l-7.565 9.943-4.15-4.148 9.946-7.565zM10.12 28a6.002 6.002 0 0 0 5.537-8.312c.044.008.088.026.133.032l1.06.16c.177.02.359.03.546.03 1.539 0 3.349-.83 4.24-2l9.068-11.92c.999-1.32 1.59-3.06 1.316-3.89-.275-.83-1.175-1.72-2-2a1.413 1.413 0 0 0-.481-.07c-.913 0-2.312.55-3.407 1.39l-11.924 9.06c-1.313 1-2.197 3.16-1.964 4.79l.152 1.06c.006.045.023.088.032.132a6.002 6.002 0 0 0-8.049 7.278L.119 28H10.12z" fill-rule="evenodd"/></symbol>
+      <symbol id="icons-palette" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 459 459"> <path d="M229.5,0C102,0,0,102,0,229.5S102,459,229.5,459c20.4,0,38.25-17.85,38.25-38.25c0-10.2-2.55-17.85-10.2-25.5 c-5.1-7.65-10.2-15.3-10.2-25.5c0-20.4,17.851-38.25,38.25-38.25h45.9c71.4,0,127.5-56.1,127.5-127.5C459,91.8,357,0,229.5,0z M89.25,229.5c-20.4,0-38.25-17.85-38.25-38.25S68.85,153,89.25,153s38.25,17.85,38.25,38.25S109.65,229.5,89.25,229.5z M165.75,127.5c-20.4,0-38.25-17.85-38.25-38.25S145.35,51,165.75,51S204,68.85,204,89.25S186.15,127.5,165.75,127.5z M293.25,127.5c-20.4,0-38.25-17.85-38.25-38.25S272.85,51,293.25,51s38.25,17.85,38.25,38.25S313.65,127.5,293.25,127.5z M369.75,229.5c-20.4,0-38.25-17.85-38.25-38.25S349.35,153,369.75,153S408,170.85,408,191.25S390.15,229.5,369.75,229.5z"/> </symbol>
+      <symbol id="icons-graph" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320.531 320.531"> <path d="M149.435,119.164V63.57c13.007-3.342,22.648-15.168,22.648-29.204c0-16.624-13.524-30.148-30.148-30.148 c-16.623,0-30.147,13.524-30.147,30.148c0,14.036,9.641,25.861,22.647,29.203v55.594c-15.775,2.374-29.169,12.115-36.556,25.597 l-32.99-25.646c0.807-2.271,1.25-4.714,1.25-7.258c0-11.99-9.755-21.745-21.745-21.745s-21.745,9.755-21.745,21.745 s9.755,21.745,21.745,21.745c3.972,0,7.695-1.076,10.903-2.943l37.29,28.989c-0.55,2.971-0.852,6.027-0.852,9.155 c0,11.14,3.652,21.44,9.815,29.777l-42.163,42.163c-2.929,2.929-2.929,7.678,0,10.606c1.465,1.464,3.385,2.197,5.304,2.197 s3.839-0.732,5.304-2.197l42.163-42.163c6.429,4.753,14.026,8.012,22.277,9.254v55.718c-8.306,3.062-14.245,11.056-14.245,20.411 c0,11.99,9.755,21.745,21.745,21.745s21.745-9.755,21.745-21.745c0-9.356-5.939-17.35-14.245-20.411v-55.717 c24.136-3.631,42.7-24.506,42.7-49.637C192.135,143.67,173.57,122.795,149.435,119.164z M44.394,118.602 c-3.72,0-6.745-3.026-6.745-6.745s3.025-6.745,6.745-6.745s6.745,3.026,6.745,6.745S48.113,118.602,44.394,118.602z M126.787,34.366c0-8.353,6.795-15.148,15.147-15.148s15.148,6.795,15.148,15.148c0,8.353-6.796,15.148-15.148,15.148 S126.787,42.719,126.787,34.366z M141.935,301.313c-3.72,0-6.745-3.026-6.745-6.745c0-3.255,2.317-5.979,5.389-6.608 c0.44,0.081,0.892,0.129,1.356,0.129s0.916-0.048,1.356-0.129c3.072,0.629,5.389,3.353,5.389,6.608 C148.68,298.287,145.654,301.313,141.935,301.313z M141.935,204.001c-19.409,0-35.199-15.791-35.199-35.2 c0-3.425,0.501-6.734,1.417-9.867c0.049-0.155,0.095-0.309,0.133-0.466c4.425-14.382,17.834-24.867,33.649-24.867 c19.409,0,35.2,15.791,35.2,35.2C177.135,188.211,161.344,204.001,141.935,204.001z"/> <path d="M290.384,95.953c-16.624,0-30.148,13.524-30.148,30.148c0,0.775,0.039,1.54,0.097,2.3l-54.238,18.493 c-3.921,1.336-6.016,5.599-4.679,9.519c1.063,3.119,3.977,5.082,7.098,5.082c0.803,0,1.619-0.13,2.421-0.403l54.236-18.492 c5.392,8.212,14.677,13.65,25.214,13.65c16.623,0,30.147-13.524,30.147-30.148C320.531,109.478,307.007,95.953,290.384,95.953z M290.384,141.25c-8.353,0-15.148-6.795-15.148-15.148c0-8.353,6.796-15.148,15.148-15.148s15.147,6.795,15.147,15.148 C305.531,134.454,298.736,141.25,290.384,141.25z"/> <path d="M30.148,250.44C13.524,250.44,0,263.965,0,280.588c0,16.624,13.524,30.148,30.148,30.148 c16.623,0,30.147-13.524,30.147-30.148C60.296,263.965,46.771,250.44,30.148,250.44z M30.148,295.737 c-8.353,0-15.148-6.795-15.148-15.148c0-8.353,6.796-15.148,15.148-15.148s15.147,6.795,15.147,15.148 C45.296,288.941,38.501,295.737,30.148,295.737z"/> </symbol>
+      <symbol id="icons-related" viewBox="0 0 320.531 320.531" xmlns="http://www.w3.org/2000/svg"><path d="m149.435 119.164v-55.594c13.007-3.342 22.648-15.168 22.648-29.204 0-16.624-13.524-30.148-30.148-30.148-16.623 0-30.147 13.524-30.147 30.148 0 14.036 9.641 25.861 22.647 29.203v55.594c-15.775 2.374-29.169 12.115-36.556 25.597l-32.99-25.646c.807-2.271 1.25-4.714 1.25-7.258 0-11.99-9.755-21.745-21.745-21.745s-21.745 9.755-21.745 21.745 9.755 21.745 21.745 21.745c3.972 0 7.695-1.076 10.903-2.943l37.29 28.989c-.55 2.971-.852 6.027-.852 9.155 0 11.14 3.652 21.44 9.815 29.777l-42.163 42.163c-2.929 2.929-2.929 7.678 0 10.606 1.465 1.464 3.385 2.197 5.304 2.197s3.839-.732 5.304-2.197l42.163-42.163c6.429 4.753 14.026 8.012 22.277 9.254v55.718c-8.306 3.062-14.245 11.056-14.245 20.411 0 11.99 9.755 21.745 21.745 21.745s21.745-9.755 21.745-21.745c0-9.356-5.939-17.35-14.245-20.411v-55.717c24.136-3.631 42.7-24.506 42.7-49.637 0-25.133-18.565-46.008-42.7-49.639zm-105.041-.562c-3.72 0-6.745-3.026-6.745-6.745s3.025-6.745 6.745-6.745 6.745 3.026 6.745 6.745-3.026 6.745-6.745 6.745zm82.393-84.236c0-8.353 6.795-15.148 15.147-15.148s15.148 6.795 15.148 15.148-6.796 15.148-15.148 15.148-15.147-6.795-15.147-15.148zm15.148 266.947c-3.72 0-6.745-3.026-6.745-6.745 0-3.255 2.317-5.979 5.389-6.608.44.081.892.129 1.356.129s.916-.048 1.356-.129c3.072.629 5.389 3.353 5.389 6.608 0 3.719-3.026 6.745-6.745 6.745zm0-97.312c-19.409 0-35.199-15.791-35.199-35.2 0-3.425.501-6.734 1.417-9.867.049-.155.095-.309.133-.466 4.425-14.382 17.834-24.867 33.649-24.867 19.409 0 35.2 15.791 35.2 35.2 0 19.41-15.791 35.2-35.2 35.2z"/><path d="m290.384 95.953c-16.624 0-30.148 13.524-30.148 30.148 0 .775.039 1.54.097 2.3l-54.238 18.493c-3.921 1.336-6.016 5.599-4.679 9.519 1.063 3.119 3.977 5.082 7.098 5.082.803 0 1.619-.13 2.421-.403l54.236-18.492c5.392 8.212 14.677 13.65 25.214 13.65 16.623 0 30.147-13.524 30.147-30.148-.001-16.624-13.525-30.149-30.148-30.149zm0 45.297c-8.353 0-15.148-6.795-15.148-15.148s6.796-15.148 15.148-15.148 15.147 6.795 15.147 15.148c0 8.352-6.795 15.148-15.147 15.148z"/><path d="m30.148 250.44c-16.624 0-30.148 13.525-30.148 30.148 0 16.624 13.524 30.148 30.148 30.148 16.623 0 30.147-13.524 30.147-30.148.001-16.623-13.524-30.148-30.147-30.148zm0 45.297c-8.353 0-15.148-6.795-15.148-15.148s6.796-15.148 15.148-15.148 15.147 6.795 15.147 15.148c.001 8.352-6.794 15.148-15.147 15.148z"/></symbol>
+      <symbol id="icons-user" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.3 533.3"> <path d="M266.7,266.7c73.6,0,133.3-59.7,133.3-133.3S340.3,0,266.7,0S133.4,59.7,133.4,133.4S193.1,266.7,266.7,266.7z M266.7,333.4C177.7,333.4,0,378.1,0,466.7v66.7h533.3v-66.7C533.4,378,355.7,333.4,266.7,333.4z"/> </symbol>
+      
+    </svg>
+    <div class="site-header">
+      <div class="site-wrapper site-header__inner">
+        <div class="site-header__search">
+          <a title="Scryfall Tagger" class="branding" href="/">
+            <svg aria-hidden="true" focusable="false" class="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 460">
+<path d="M457.7,11.9c0-3.1-1.2-6.1-3.5-8.4c-4.5-4.5-12-4.5-16.6,0l-24.2,25.3h-148l-249,249.5c-2.4,2.4-3.9,5.6-3.9,9
+	c-0.1,3.4,1.2,6.7,3.6,9.1l0.4,0.4c2.4,2.4,5.6,3.9,9,3.9c3.4,0.1,6.7-1.2,9.1-3.6l67.1-64.8c2.4-2.4,5.7-3.6,9.1-3.6
+	c3.4,0.1,6.6,1.5,9,3.9l0.9,1c2.4,2.4,3.6,5.7,3.6,9.1c-0.1,3.4-1.5,6.6-3.9,9l-86.7,83.5c-2.4,2.4-3.9,5.6-3.9,9
+	c-0.1,3.4,1.2,6.7,3.6,9.1l0.4,0.4c2.4,2.4,5.6,3.9,9,3.9c3.4,0.1,6.7-1.2,9.1-3.6l39.7-38.3c2.4-2.4,5.7-3.6,9.1-3.6
+	c3.4,0.1,6.6,1.5,9,3.9l0.4,0.4c2.4,2.4,3.6,5.7,3.6,9.1c-0.1,3.4-1.5,6.6-3.9,9l-68.4,65.8c-2.4,2.4-3.9,5.6-3.9,9
+	c-0.1,3.4,1.2,6.7,3.6,9.1l0.4,0.4c2.4,2.4,5.6,3.9,9,3.9c3.4,0.1,6.7-1.2,9.1-3.6l92.7-89.2c2.4-2.4,5.7-3.6,9.1-3.6
+	c3.4,0.1,6.6,1.5,9,3.9l0.4,0.4c2.4,2.4,3.6,5.7,3.6,9.1c-0.1,3.4-1.5,6.6-3.9,9l-57.5,55.4c-2.4,2.4-3.9,5.6-3.9,9
+	c-0.1,3.4,1.2,6.7,3.6,9.1l0.4,0.4c2.4,2.4,5.6,3.9,9,3.9c3.4,0.1,6.7-1.2,9.1-3.6l72.3-69.5c2.4-2.4,5.7-3.6,9.1-3.6
+	c3.4,0.1,6.6,1.5,9,3.9c4.9,5,4.8,13.1-0.2,18L155,437.5c-2.4,2.4-3.8,5.6-3.9,9c-0.1,3.4,1.2,6.7,3.6,9.1v-0.1l0.5,0.5
+	c2.4,2.4,5.6,3.9,9,3.9c3.4,0.1,6.7-1.2,9.1-3.6L432,202V43.5l22.2-23.3C456.5,18,457.7,15,457.7,11.9z M344.9,151.3
+	c-19.5,0-35.2-15.9-35.2-35.2c0-19.4,15.9-35.2,35.2-35.2c5.4,0,10.5,1.4,15.2,3.5l-14.9,14.8c-4.5,4.5-4.5,12,0,16.6
+	c2.3,2.3,5.2,3.5,8.4,3.5c3.1,0,6.1-1.2,8.4-3.5l14.9-14.8c2.3,4.5,3.5,9.6,3.5,15.2C380.1,135.5,364.2,151.3,344.9,151.3z"/>
+</svg>
+
+</a>
+            <a title="User Profile" class="site-header__link desktop-hidden" rel="nofollow" href="/users/z1rak">
+              <svg><use xlink:href="#icons-user"></use></svg> <span class="vh">User Profile</span>
+</a>        </div>
+        <div class="site-header__navigation">
+            <a title="User Profile" class="site-header__link desktop-flex" rel="nofollow" href="/users/z1rak">
+              <svg><use xlink:href="#icons-user"></use></svg> <span class="vh">User Profile</span>
+</a>        </div>
+      </div>
+    </div>
+    <div class="site-wrapper site-body">
+      <div class="tags-list">
+  <h1>Tag Hierarchy</h1>
+  <div class="tags-list__row depth-0">
+    <strong>card tags</strong>
+  </div>
+    <div class="tags-list__row depth-1">
+      <span class="tags-list__child tags-list__current">
+        <a href="/tags/card/card-advantage">card advantage</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/consult">consult</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/consult-cast">consult-cast</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/consult-onto-battlefield">consult-onto-battlefield</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/draw">draw</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/cantrip">cantrip</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/curiosity">curiosity</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/delayed-cantrip">delayed cantrip</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/drawlink">drawlink</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/gives-drawlink">gives drawlink</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/repeatable-draw">repeatable draw</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/enchantment-engine">enchantment engine</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/future-sight-engine">future sight engine</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse">impulse</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-angel">impulse-angel</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-artifact">impulse-artifact</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-historic">impulse-historic</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-artifact-creature">impulse-artifact-creature</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-aura">impulse-aura</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-black">impulse-black</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-blue">impulse-blue</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-colorless">impulse-colorless</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-creature">impulse-creature</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-demon">impulse-demon</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-dinosaur">impulse-dinosaur</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-dragon">impulse-dragon</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-dwarf">impulse-dwarf</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-elf">impulse-elf</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-enchantment">impulse-enchantment</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-equipment">impulse-equipment</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-faerie">impulse-faerie</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-garruk">impulse-garruk</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-goblin">impulse-goblin</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-green">impulse-green</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-historic">impulse-historic</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-human">impulse-human</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-instant">impulse-instant</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-kavu">impulse-kavu</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-knight">impulse-knight</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-land">impulse-land</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-legendary">impulse-legendary</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-historic">impulse-historic</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-legendary-artifact">impulse-legendary-artifact</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-legendary-creature">impulse-legendary-creature</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-merfolk">impulse-merfolk</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-multicolor">impulse-multicolor</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-nonland">impulse-nonland</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-permanent">impulse-permanent</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-planeswalker">impulse-planeswalker</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-rat">impulse-rat</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-red">impulse-red</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-saga">impulse-saga</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-historic">impulse-historic</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-soldier">impulse-soldier</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-sorcery">impulse-sorcery</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-to-zone">impulse-to-zone</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-onto-battlefield">impulse-onto-battlefield</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-to-top">impulse-to-top</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-vehicle">impulse-vehicle</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-warrior">impulse-warrior</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-white">impulse-white</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/impulse-zombie">impulse-zombie</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/loot">loot</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/miniwheel">miniwheel</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/mulch">mulch</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/precognition-engine">precognition engine</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth">regrowth</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-arcane">regrowth-arcane</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-artifact">regrowth-artifact</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-historic">regrowth-historic</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-artifact-creature">regrowth-artifact-creature</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-aura">regrowth-aura</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-creature">regrowth-creature</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-enchantment">regrowth-enchantment</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-equipment">regrowth-equipment</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-instant">regrowth-instant</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-land">regrowth-land</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-legendary">regrowth-legendary</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-historic">regrowth-historic</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-nonland">regrowth-nonland</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-permanent">regrowth-permanent</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-planeswalker">regrowth-planeswalker</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-saga">regrowth-saga</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-4">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-historic">regrowth-historic</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-self">regrowth-self</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/regrowth-sorcery">regrowth-sorcery</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/rummage">rummage</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/rummage-to-library">rummage to library</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/tormenting-voice">tormenting voice</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/wheel">wheel</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/wheel-one-sided">wheel-one-sided</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/wheel-symmetrical">wheel-symmetrical</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-3">
+      <span class="tags-list__child ">
+        <a href="/tags/card/whirlpool">whirlpool</a>
+      </span>
+    </div>
+    <div class="tags-list__row depth-2">
+      <span class="tags-list__child ">
+        <a href="/tags/card/whirlpool">whirlpool</a>
+      </span>
+    </div>
+</div>
+    </div>
+  </body>
+</html>
