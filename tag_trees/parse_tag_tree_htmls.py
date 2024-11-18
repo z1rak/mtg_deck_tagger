@@ -18,7 +18,7 @@ def extract_tag_hierarchy_from_html(html):
             
                 # Überprüfen, ob ein <a> Tag existiert
                 if a_tag:
-                    tag_text = a_tag.get_text(strip=True)
+                    tag_text = a_tag.get_text(strip=True).replace(' ', '-')
                 else:
                     continue  # Wenn kein <a> Tag gefunden wird, überspringe dieses Element
 
@@ -68,6 +68,29 @@ def remove_duplicates_at_lowest_level(hierarchy):
     return tmp_hier
 
 
+def merge_dicts(d1, d2):
+    """
+    Recursively merges two dictionaries without losing information.
+    """
+    merged = {}
+    keys = set(d1.keys()).union(d2.keys())
+    
+    for key in keys:
+        if key in d1 and key in d2:
+            if isinstance(d1[key], dict) and isinstance(d2[key], dict):
+                # Recursively merge if both values are dictionaries
+                merged[key] = merge_dicts(d1[key], d2[key])
+            else:
+                # If values conflict, store them in a list
+                merged[key] = [d1[key], d2[key]] if d1[key] != d2[key] else d1[key]
+        elif key in d1:
+            merged[key] = d1[key]
+        else:
+            merged[key] = d2[key]
+    
+    return merged
+
+
 def import_multiple_html_files_from_folder(folder_path):
     combined_hierarchy = {}
 
@@ -76,7 +99,7 @@ def import_multiple_html_files_from_folder(folder_path):
             with open(os.path.join(folder_path, filename), 'r', encoding='utf-8') as file:
                 html_content = file.read()
                 file_hierarchy = extract_tag_hierarchy_from_html(html_content)
-                combined_hierarchy.update(file_hierarchy)
+                combined_hierarchy = merge_dicts(combined_hierarchy, file_hierarchy)
 
     return combined_hierarchy
 
@@ -84,6 +107,8 @@ def import_multiple_html_files_from_folder(folder_path):
 folder_path = './tmp'
 combined_tags = import_multiple_html_files_from_folder(folder_path)
 cleaned_tags = remove_duplicates_at_lowest_level(combined_tags)
+# for some reason needs to be applied twice to get all
+cleaned_tags = remove_duplicates_at_lowest_level(cleaned_tags)
 cleaned_tags = {k:v for k,v in sorted(combined_tags.items())}
 
 # Ausgabe der bereinigten kombinierten Hierarchie

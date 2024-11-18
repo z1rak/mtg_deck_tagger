@@ -49,7 +49,7 @@ def get_decklist(deck_id_or_url: str) -> dict:
     :raises: Exception if the request fails or the response is invalid.
     """
     if "moxfield.com" in deck_id_or_url:
-        match = re.search(r"decks/([a-zA-Z0-9]+)", deck_id_or_url)
+        match = re.search(r"decks/([a-zA-Z0-9_-]+)", deck_id_or_url)
         if match:
             deck_id = match.group(1)
         else:
@@ -158,7 +158,7 @@ def add_tags_to_deck(deck_data: dict) -> dict:
     :param deck_data: The deck dictionary with card data.
     :return: The updated deck dictionary with tags for each card.
     """
-    card_tags_dict_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'ressources', 'card_tags_dict')
+    card_tags_dict_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'ressources', 'card_tags_dict.pkl')
     card_tags_dict = _load_card_tags(card_tags_dict_path)
 
     for card_key, card_data in deck_data.items():
