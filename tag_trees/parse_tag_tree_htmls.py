@@ -23,7 +23,7 @@ def extract_tag_hierarchy_from_html(html):
                     continue  # Wenn kein <a> Tag gefunden wird, überspringe dieses Element
 
                 # Stelle sicher, dass wir die parent_stack korrekt handhaben
-                while len(parent_stack) > depth_number:
+                while len(parent_stack) + 1 > depth_number:
                     parent_stack.pop()  # Poppe, bis wir die richtige Tiefe haben
 
                 if len(parent_stack) == 0:  # Falls wir bei der obersten Ebene sind
@@ -34,6 +34,39 @@ def extract_tag_hierarchy_from_html(html):
                     parent_stack.append(parent_stack[-1][tag_text])
 
     return tag_hierarchy
+
+
+def remove_duplicates_at_lowest_level(hierarchy):
+    tmp_hier = hierarchy.copy()
+    def traverse(node, depth, key_depths):
+        # Traverse the node recursively and record depths of keys
+        for key, child in node.items():
+            # Append the current depth for the key
+            if key not in key_depths:
+                key_depths[key] = []
+            key_depths[key].append(depth)
+            
+            if child:  # If there are nested children, recurse
+                traverse(child, depth + 1, key_depths)
+
+    def clean(node, depth, key_depths):
+        # Clean duplicates at the current level
+        for key in list(node.keys()):
+            # Remove the key if it appears deeper in the hierarchy
+            if (len(key_depths[key]) > 1) and (max(key_depths[key]) == depth):
+                del node[key]
+            elif node[key]:  # If the key has children, recurse
+                clean(node[key], depth + 1, key_depths)
+
+    # Step 1: Traverse the hierarchy and collect key depths
+    key_depths = {}
+    traverse(tmp_hier, 0, key_depths)
+
+    # Step 2: Clean the hierarchy based on key depths
+    clean(tmp_hier, 0, key_depths)
+
+    return tmp_hier
+
 
 def import_multiple_html_files_from_folder(folder_path):
     combined_hierarchy = {}
@@ -48,12 +81,14 @@ def import_multiple_html_files_from_folder(folder_path):
     return combined_hierarchy
 
 # Pfad zum Ordner
-folder_path = '.'
+folder_path = './tmp'
 combined_tags = import_multiple_html_files_from_folder(folder_path)
+cleaned_tags = remove_duplicates_at_lowest_level(combined_tags)
+cleaned_tags = {k:v for k,v in sorted(combined_tags.items())}
 
 # Ausgabe der bereinigten kombinierten Hierarchie
-print(combined_tags)
+print(cleaned_tags)
 
 # Speichere die bereinigte Hierarchie in einer Datei
 with open('cleaned_tag_tree.pkl', 'wb') as file:
-    pickle.dump(combined_tags, file)
+    pickle.dump(cleaned_tags, file)

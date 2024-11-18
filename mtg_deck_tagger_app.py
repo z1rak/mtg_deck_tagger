@@ -1,32 +1,17 @@
 import streamlit as st
+from streamlit_tree_select import tree_select
 import pickle
 import os
-from functions.funs import get_decklist, flatten_dict, extract_relevant_card_data, add_oracle_ids, extract_unique_tags, add_tags_to_deck
+from functions.general_funs import *
+from functions.webapp_funs import *
 
 
-# Erstelle den Cache-Ordner, falls er noch nicht existiert
-cache_folder = "cache"
-if not os.path.exists(cache_folder):
-    os.makedirs(cache_folder)
 
-def get_processed_deck_cache_filename(deck_id_or_url):
-    """Generiert den Cache-Dateinamen basierend auf der Deck-ID und speichert es im Cache-Ordner."""
-    deck_id = deck_id_or_url.split("/")[-1]  # Extrahiere die Deck-ID aus der URL (falls nötig)
-    return os.path.join(cache_folder, f"processed_deck_{deck_id}.pkl")
 
-def load_cached_processed_deck(deck_id_or_url):
-    """Lädt das zwischengespeicherte, verarbeitete Deck basierend auf der Deck-ID, wenn es existiert."""
-    cache_filename = get_processed_deck_cache_filename(deck_id_or_url)
-    if os.path.exists(cache_filename):
-        with open(cache_filename, "rb") as f:
-            return pickle.load(f)
-    return None
+# Lade Tag Tree
+with open('./tag_trees/cleaned_tag_tree.pkl', "rb") as f:
+    tag_tree = pickle.load(f)
 
-def save_processed_deck(deck_id_or_url, processed_data):
-    """Speichert das verarbeitete Deck (inklusive Tags) als Pickle-Datei basierend auf der Deck-ID im Cache-Ordner."""
-    cache_filename = get_processed_deck_cache_filename(deck_id_or_url)
-    with open(cache_filename, "wb") as f:
-        pickle.dump(processed_data, f)
 
 def main():
     # Titel der App
@@ -48,7 +33,7 @@ def main():
                 
                     # Verarbeite das Deck
                     flat_deck = flatten_dict(deck_data)
-                    deck_dict = extract_relevant_card_data(flat_deck)
+                    deck_dict = extract_card_data(flat_deck)
                     deck_dict_with_oracle_ids = add_oracle_ids(deck_dict)
                     deck_dict_with_tags = add_tags_to_deck(deck_dict_with_oracle_ids)
                 
@@ -64,18 +49,17 @@ def main():
 
         # 2. Extrahiere einzigartige Tags aus dem Deck
         all_tags = sorted(extract_unique_tags(deck_dict_with_tags))
+        deck_tag_tree = filter_tag_tree(tag_tree, all_tags)
 
         # --- Scrollbarer Container für die Checkboxen ---
         with st.container(height=500):
             # Nutze den gesamten verfügbaren Platz für den Container
             selected_tags = []
-            with st.form("Tags aus der Liste auswählen", clear_on_submit=False):
-                # Scrollbares Layout für die Tags
-                for tag in all_tags:
-                    if st.checkbox(tag, key=tag):
-                        selected_tags.append(tag)
-                sub_commit = st.form_submit_button('Deckstring generieren', type='primary')
-
+            with st.form('Select Tags'):
+                sub_commit = st.form_submit_button('Deckstring generieren')
+                nodes = convert_to_tree_select_format(deck_tag_tree)
+                selected_tags = tree_select(nodes, no_cascade=True)["checked"]
+                
         # 3. Button zum Generieren des Deckstrings
         if sub_commit:
             # Generiere den Deckstring
@@ -90,7 +74,7 @@ def main():
                 name = card.get("name", "")
                 card_set = card.get("set", "").upper()  # Set in Großbuchstaben
                 cn = card.get("cn", "")
-                tags = " ".join([f"#{tag}" for tag in selected_tags if tag in card.get('tags', [])])
+                tags = " ".join([f"#{tag}" for tag in get_matching_tags(selected_tags, tag_tree, card.get('tags', []))])
 
                 # Baue den Deckstring
                 deck_string += f"{quantity} {name} ({card_set}) {cn} {tags}\n"
