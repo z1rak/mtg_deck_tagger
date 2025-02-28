@@ -104,12 +104,13 @@ def import_multiple_html_files_from_folder(folder_path):
     return combined_hierarchy
 
 # Pfad zum Ordner
-folder_path = './tmp'
+cwd_path = os.getcwd()
+folder_path = os.path.join(cwd_path, "tmp")
 combined_tags = import_multiple_html_files_from_folder(folder_path)
 cleaned_tags = remove_duplicates_at_lowest_level(combined_tags)
 # for some reason needs to be applied twice to get all
 cleaned_tags = remove_duplicates_at_lowest_level(cleaned_tags)
-cleaned_tags = {k:v for k,v in sorted(combined_tags.items())}
+cleaned_tags = {k:v for k,v in sorted(cleaned_tags.items())}
 
 # Ausgabe der bereinigten kombinierten Hierarchie
 print(cleaned_tags)

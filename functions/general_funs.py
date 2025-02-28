@@ -5,17 +5,39 @@ import time
 import pickle
 import os
 import re
+from collections import defaultdict
+
 
 # Header für alle API requests
 header = {
-    "User-Agent": 'MTG-Deck-Tagger-V1',
-    "Accept": '*/*'
+    "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0',
+    "Accept": 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
 }
 
 
 # Globale Variable für das Rate-Limit
 SCRYFALL_RATE_LIMIT = 10  # Maximal 10 Abfragen pro Sekunde
 SLEEP_TIME = 1 / SCRYFALL_RATE_LIMIT  # Berechnet die Zeit, die wir zwischen den Anfragen warten müssen
+
+
+def get_card_tags_dict():
+    url = "https://api.scryfall.com/private/tags/oracle?pretty=true"
+    output_path = "../ressources/card_tags_dict.pkl"
+    response = requests.get(url)
+    data = response.json()
+
+    flipped_mapping = defaultdict(list)
+
+    for entry in data["data"]:
+        label = entry["label"]
+        for oracle_id in entry["oracle_ids"]:
+            flipped_mapping[oracle_id].append(label)
+
+    flipped_mapping = dict(flipped_mapping)
+
+    with open(output_path, "wb") as f:
+        pickle.dump(flipped_mapping, f)
+
 
 
 def fetch_oracle_id(scryfall_id: str) -> str:
